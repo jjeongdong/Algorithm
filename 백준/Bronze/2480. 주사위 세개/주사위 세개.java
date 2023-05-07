@@ -1,37 +1,35 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.IOException;
+import java.util.StringTokenizer;
 
 public class Main {
-
-    public static void main(String[] args) throws Exception {
-
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        String[] input = br.readLine().split(" ");
-        int num1 = Integer.parseInt(input[0]);
-        int num2 = Integer.parseInt(input[1]);
-        int num3 = Integer.parseInt(input[2]);
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
-        int price = 0;
-        int max = 0;
+        int a, b, c;
+        a = Integer.parseInt(st.nextToken());
+        b = Integer.parseInt(st.nextToken());
+        c = Integer.parseInt(st.nextToken());
 
-        if (num1 == num2 && num2 == num3) {
-            price = 10000 + num1 * 1000;    
-        } else if (num1 != num2 && num2 != num3 && num1 != num3) {
-            for (int i = 0; i < 3; i++) {
-                if (max < Integer.parseInt(input[i])) {
-                    max = Integer.parseInt(input[i]);
-                }
-            }
-            price = max * 100;
-        } else {
-            if (num1 == num2 || num1 == num3) {
-                price = 1000 + num1 * 100;
-            } else {
-                price = 1000 + num2 * 100;
-            }
+
+        if (a != b && b != c && a != c) {
+            int max = Math.max(a, Math.max(b, c));
+            System.out.println(max * 100);
         }
 
-        System.out.println(price);
+        else if (a == b && a == c) {
+            System.out.println(10000 + a * 1000);
+        }
+
+        else if(a == b || a == c) {
+            System.out.println(1000 + a * 100);
+        }
+
+        else {
+            System.out.println(1000 + b * 100);
+        }
     }
 }
