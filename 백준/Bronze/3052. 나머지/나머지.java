@@ -8,14 +8,13 @@ public class Main {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int[] arr = new int[10];
+        HashSet<Integer> remainderSet = new HashSet<>();
 
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = Integer.parseInt(br.readLine()) % 42;
+        for (int i = 0; i < 10; i++) {
+            remainderSet.add(Integer.parseInt(br.readLine()) % 42);
         }
 
-        int[] resultArr = Arrays.stream(arr).distinct().toArray();
 
-        System.out.println(resultArr.length);
+        System.out.println(remainderSet.size());
     }
 }
