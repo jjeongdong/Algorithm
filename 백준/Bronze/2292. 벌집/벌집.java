@@ -1,32 +1,25 @@
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.io.InputStreamReader;
 
 public class Main {
 
-    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static StringTokenizer st;
-    static StringBuilder sb = new StringBuilder();
-    public static void main(String[] args) throws IOException {
-
-        int N = Integer.parseInt(br.readLine());
-
-        int answer = 1;
-        int sum = 1;
-
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < 6 * i; j++) {
-                sum++;
-                if (sum == N) {
-                    break;
-                }
-            }
-            if (sum == N) break;
-            answer++;
-        }
-
-        System.out.println(answer);
-    }
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int n = Integer.parseInt(br.readLine());
+		
+		System.out.print(solution(n));
+	}
+	
+	private static int solution(int n) {
+		if(n == 1) return 1;
+		int i=2;
+		int k=1;
+		
+		while(i<=n) {
+			i += 6*k++;
+		}
+		
+		return k;
+	}
 }
