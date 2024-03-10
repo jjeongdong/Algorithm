@@ -47,10 +47,8 @@ public class Main {
             }
         }
 
-        if (N == 1) {
-            System.out.println("1/1");
-        } else {
-            System.out.println(num1 + "/" + num2);
-        }
+
+        System.out.println(num1 + "/" + num2);
+
     }
 }
