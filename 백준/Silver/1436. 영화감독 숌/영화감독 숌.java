@@ -1,10 +1,12 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
  
 public class Main {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
-		Scanner in = new Scanner(System.in);
-		int N = in.nextInt();
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int N = Integer.parseInt(br.readLine());
  
 		int num = 666;
 		int count = 1;
