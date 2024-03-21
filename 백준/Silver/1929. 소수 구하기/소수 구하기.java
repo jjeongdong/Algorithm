@@ -10,16 +10,16 @@ public class Main {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
+        StringBuilder sb = new StringBuilder();
 
         int m = Integer.parseInt(st.nextToken());
         int n = Integer.parseInt(st.nextToken());
 
         int[] arr = new int[n + 1];
-        List<Integer> answer = new ArrayList<>();
 
         for (int i = 2; i < arr.length; i++) {
-            if (arr[i] == 0) {
-                answer.add(i);
+            if (arr[i] == 0 && i >= m) {
+                sb.append(i).append("\n");
             }
 
             for (int j = i; j < arr.length; j+=i) {
@@ -27,11 +27,7 @@ public class Main {
             }
         }
 
-        for (int tmp : answer) {
-            if (tmp >= m && tmp <= n) {
-                System.out.println(tmp);
-            }
-        }
+        System.out.println(sb);
 
     }
 }
