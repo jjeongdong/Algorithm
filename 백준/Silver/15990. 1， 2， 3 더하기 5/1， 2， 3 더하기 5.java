@@ -20,6 +20,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
 
         int N = Integer.parseInt(br.readLine());
         int[] arr = new int[N];
@@ -33,7 +34,7 @@ public class Main {
         list.add(new Cnt(0, 1, 0));
         list.add(new Cnt(1, 1, 1));
 
-        for (int i = 3; i <= 1000000; i++) {
+        for (int i = 3; i <= 100000; i++) {
             long i1 = (list.get(i - 3).cnt1 + list.get(i - 3).cnt2) % 1000000009;
             long i2 = (list.get(i - 2).cnt1 + list.get(i - 2).cnt3) % 1000000009;
             long i3 = (list.get(i - 1).cnt2 + list.get(i - 1).cnt3) % 1000000009;
@@ -42,9 +43,10 @@ public class Main {
         }
 
         for (int tmp : arr) {
-            System.out.println((list.get(tmp - 1).cnt1 + list.get(tmp - 1).cnt2 + list.get(tmp - 1).cnt3) % 1000000009);
+            sb.append((list.get(tmp - 1).cnt1 + list.get(tmp - 1).cnt2 + list.get(tmp - 1).cnt3) % 1000000009).append("\n");
         }
 
+        System.out.println(sb);
 
     }
 }
