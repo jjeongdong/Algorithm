@@ -6,64 +6,61 @@ import java.util.StringTokenizer;
 public class Main {
 
     static int M, N, K;
-    static int[][] cabbage;
-    static boolean[][] visit;
     static int count;
-    static int[] dx = { 0, -1, 0, 1 };
-    static int[] dy = { 1, 0, -1, 0 };
+    static boolean[][] visit;
+    static int[][] cabbage;
+    static int[] dx = {0, -1, 0, 1};
+    static int[] dy = {1, 0, -1, 0};
 
-    static void dfs(int x, int y) {
+    public static void main(String[] args) throws IOException {
+        Main T = new Main();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int testCase = Integer.parseInt(br.readLine());
+
+        for (int i = 0; i < testCase; i++) {
+            count = 0;
+            StringTokenizer st1 = new StringTokenizer(br.readLine(), " ");
+            M = Integer.parseInt(st1.nextToken());
+            N = Integer.parseInt(st1.nextToken());
+
+            visit = new boolean[M][N];
+            cabbage = new int[M][N];
+
+            K = Integer.parseInt(st1.nextToken());
+
+            for (int j = 0; j < K; j++) {
+                StringTokenizer st2 = new StringTokenizer(br.readLine(), " ");
+                int x = Integer.parseInt(st2.nextToken());
+                int y = Integer.parseInt(st2.nextToken());
+
+                cabbage[x][y] = 1;
+            }
+
+            for (int x = 0; x < M; x++) {
+                for (int y = 0; y < N; y++) {
+                    if (cabbage[x][y] == 1 && !visit[x][y]) {
+                        T.DFS(x, y);
+                        count++;
+                    }
+                }
+            }
+
+            System.out.println(count);
+        }
+    }
+
+    public void DFS(int x, int y) {
         visit[x][y] = true;
 
         for (int i = 0; i < 4; i++) {
             int nx = x + dx[i];
             int ny = y + dy[i];
 
-            if (nx >= 0 && ny >= 0 && nx < M && ny < N) {
+            if (nx >= 0 && ny >= 0 && nx < M && ny < N ) {
                 if (!visit[nx][ny] && cabbage[nx][ny] == 1) {
-                    dfs(nx, ny);
+                    DFS(nx, ny);
                 }
             }
-
         }
-
     }
-
-    public static void main(String[] args) throws NumberFormatException, IOException {
-
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
-        int tc = Integer.parseInt(br.readLine());
-
-        for (int i = 0; i < tc; i++) {
-            count = 0;
-            StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-            M = Integer.parseInt(st.nextToken());
-            N = Integer.parseInt(st.nextToken());
-            cabbage = new int[M][N];
-            visit = new boolean[M][N];
-
-            K = Integer.parseInt(st.nextToken());
-            for (int j = 0; j < K; j++) {
-                st = new StringTokenizer(br.readLine(), " ");
-                int p1 = Integer.parseInt(st.nextToken());
-                int p2 = Integer.parseInt(st.nextToken());
-                cabbage[p1][p2] = 1;
-            }
-
-            for (int x = 0; x < M; x++) {
-                for (int y = 0; y < N; y++) {
-                    if (cabbage[x][y] == 1 && !visit[x][y]) {
-                        dfs(x, y);
-                        count++;
-                    }
-                }
-            }
-
-            sb.append(count).append("\n");
-        }
-
-        System.out.println(sb);
-    }
-
 }
