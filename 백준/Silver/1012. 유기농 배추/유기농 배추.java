@@ -6,47 +6,52 @@ import java.util.StringTokenizer;
 public class Main {
 
     static int M, N, K;
-    static int count;
+    static int[][] board;
     static boolean[][] visit;
-    static int[][] cabbage;
-    static int[] dx = {0, -1, 0, 1};
-    static int[] dy = {1, 0, -1, 0};
+    static int[] dx = new int[]{-1, 0, 1, 0};
+    static int[] dy = new int[]{0, 1, 0, -1};
 
     public static void main(String[] args) throws IOException {
         Main T = new Main();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int testCase = Integer.parseInt(br.readLine());
+        StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < testCase; i++) {
-            count = 0;
-            StringTokenizer st1 = new StringTokenizer(br.readLine(), " ");
-            M = Integer.parseInt(st1.nextToken());
-            N = Integer.parseInt(st1.nextToken());
+        int tc = Integer.parseInt(br.readLine());
+        int x, y, answer;
 
+        for (int i = 0; i < tc; i++) {
+            answer = 0;
+
+            StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+            M = Integer.parseInt(st.nextToken());
+            N = Integer.parseInt(st.nextToken());
+
+            board = new int[M][N];
             visit = new boolean[M][N];
-            cabbage = new int[M][N];
 
-            K = Integer.parseInt(st1.nextToken());
+            K = Integer.parseInt(st.nextToken());
 
             for (int j = 0; j < K; j++) {
-                StringTokenizer st2 = new StringTokenizer(br.readLine(), " ");
-                int x = Integer.parseInt(st2.nextToken());
-                int y = Integer.parseInt(st2.nextToken());
+                st = new StringTokenizer(br.readLine(), " ");
+                x = Integer.parseInt(st.nextToken());
+                y = Integer.parseInt(st.nextToken());
 
-                cabbage[x][y] = 1;
+                board[x][y] = 1;
             }
 
-            for (int x = 0; x < M; x++) {
-                for (int y = 0; y < N; y++) {
-                    if (cabbage[x][y] == 1 && !visit[x][y]) {
-                        T.DFS(x, y);
-                        count++;
+            for (int k = 0; k < M; k++) {
+                for (int l = 0; l < N; l++) {
+                    if (board[k][l] == 1 && !visit[k][l]) {
+                        T.DFS(k, l);
+                        answer++;
                     }
                 }
             }
 
-            System.out.println(count);
+            sb.append(answer).append("\n");
         }
+
+        System.out.println(sb);
     }
 
     public void DFS(int x, int y) {
@@ -56,8 +61,8 @@ public class Main {
             int nx = x + dx[i];
             int ny = y + dy[i];
 
-            if (nx >= 0 && ny >= 0 && nx < M && ny < N ) {
-                if (!visit[nx][ny] && cabbage[nx][ny] == 1) {
+            if (nx >= 0 && ny >= 0 && nx < M && ny < N) {
+                if (!visit[nx][ny] && board[nx][ny] == 1) {
                     DFS(nx, ny);
                 }
             }
