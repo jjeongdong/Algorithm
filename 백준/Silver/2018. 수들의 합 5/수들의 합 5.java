@@ -7,22 +7,23 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
 
-        int count = 1; // 경우의 수를 세기 위한 변수
-        int sum = 1; // 연속된 자연수의 합
-        int start = 1; // 시작 포인터
+        int start = 1;
         int end = 1;
+
+        int count = 1;
+        int sum = 1;
 
         while (end != N) {
             if (sum == N) {
                 count++;
                 end++;
-                sum = sum + end;
-            } else if (sum > N) {
-                sum = sum - start;
-                start++;
-            } else {
+                sum += end;
+            } else if (sum < N) {
                 end++;
-                sum = sum + end;
+                sum += end;
+            } else {
+                sum -= start;
+                start++;
             }
         }
 
