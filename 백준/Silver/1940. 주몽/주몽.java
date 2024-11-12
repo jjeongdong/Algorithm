@@ -28,6 +28,7 @@ public class Main {
             int sum = arr[lt] + arr[rt];
             if (sum == M) {
                 lt++;
+                rt--;
                 count++;
             } else if (sum < M) {
                 lt++;
