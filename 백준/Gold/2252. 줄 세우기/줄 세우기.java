@@ -16,6 +16,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         Main T = new Main();
+        StringBuilder sb = new StringBuilder();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
@@ -45,7 +46,7 @@ public class Main {
 
         while (!queue.isEmpty()) {
             int now = queue.poll();
-            System.out.print(now + " ");
+            sb.append(now).append(" ");
             for (int next : A.get(now)) {
                 indegree[next]--;
                 if (indegree[next] == 0) {
@@ -53,5 +54,7 @@ public class Main {
                 }
             }
         }
+
+        System.out.println(sb);
     }
 }
