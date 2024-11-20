@@ -1,45 +1,49 @@
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
 
 public class Main {
-
-    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-    public static void main(String[] args) throws IOException{
-
-        int count = 0;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
+        int answer = 0;
 
         for (int i = 0; i < N; i++) {
-            if (check()) {
-                count++;
-            }
-        }
-        System.out.println(count);
-    }
+            int index = 0;
+            boolean bool = false;
+            String str = br.readLine();
 
-    public static boolean check() throws IOException {
-        boolean[] check = new boolean[26];
-        int prev = 0;
-        String str = br.readLine();
-
-        for(int i = 0; i < str.length(); i++) {
-            int now = str.charAt(i);
-
-
-            if (prev != now) {
-
-                if (!check[now - 'a']) {
-                    check[now - 'a'] = true;
-                    prev = now;
+            for (int j = 0; j < str.length(); j++) {
+                char tmp = str.charAt(j);
+                index = 0;
+                for (int k = j + 1; k < str.length(); k++) {
+                    if (tmp != str.charAt(k)) {
+                        index = k;
+                        break;
+                    }
                 }
 
-                else {
-                    return false;
+                if (index == 0) {
+                    break;
+                }
+
+                for (int k = index + 1; k < str.length(); k++) {
+                    if (tmp == str.charAt(k)) {
+                        bool = true;
+                        break;
+                    }
                 }
             }
+
+
+            if (!bool) {
+                answer++;
+            }
         }
-        return true;
+
+        System.out.println(answer);
     }
 }
