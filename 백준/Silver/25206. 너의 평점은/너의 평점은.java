@@ -1,63 +1,53 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Objects;
+import java.io.*;
 import java.util.StringTokenizer;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    private static final StringBuilder sb = new StringBuilder();
+    private static final boolean[] set = new boolean[21];
 
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-
-        int cnt = 20;
-        double totalGrade = 0;
-        double totalCount = 0;
-
+        double totalScore = 0;
+        int count = 0;
         for (int i = 0; i < 20; i++) {
-            st = new StringTokenizer(br.readLine(), " ");
+            StringTokenizer st = new StringTokenizer(br.readLine());
 
-            String name = st.nextToken();
-            double count = Double.parseDouble(st.nextToken());
-            totalCount += count;
-            String strGrade = st.nextToken();
-            double grade = 0;
+            String courseName = st.nextToken();
+            double num = Double.parseDouble(st.nextToken());
+            String grade = String.valueOf(st.nextToken());
 
-            if (Objects.equals(strGrade, "A+")) {
-                grade = 4.5;
-                totalGrade += count * grade;
-            } else if (Objects.equals(strGrade, "A0")) {
-                grade = 4.0;
-                totalGrade += count * grade;
-            } else if (Objects.equals(strGrade, "B+")) {
-                grade = 3.5;
-                totalGrade += count * grade;
-            } else if (Objects.equals(strGrade, "B0")) {
-                grade = 3.0;
-                totalGrade += count * grade;
-            } else if (Objects.equals(strGrade, "C+")) {
-                grade = 2.5;
-                totalGrade += count * grade;
-            } else if (Objects.equals(strGrade, "C0")) {
-                grade = 2.0;
-                totalGrade += count * grade;
-            } else if (Objects.equals(strGrade, "D+")) {
-                grade = 1.5;
-                totalGrade += count * grade;
-            } else if (Objects.equals(strGrade, "D0")) {
-                grade = 1.0;
-                totalGrade += count * grade;
-            } else if (Objects.equals(strGrade, "F")) {
-                grade = 0.0;
-                totalGrade += count * grade;
-            } else {
-                totalCount -= count;
+
+            if (grade.equals("A+")) {
+                totalScore += 4.5 * num;
+                count += num;
+            } else if (grade.equals("A0")) {
+                totalScore += 4.0 * num;
+                count += num;
+            } else if (grade.equals("B+")) {
+                totalScore += 3.5 * num;
+                count += num;
+            } else if (grade.equals("B0")) {
+                totalScore += 3.0 * num;
+                count += num;
+            } else if (grade.equals("C+")) {
+                totalScore += 2.5 * num;
+                count += num;
+            } else if (grade.equals("C0")) {
+                totalScore += 2.0 * num;
+                count += num;
+            } else if (grade.equals("D+")) {
+                totalScore += 1.5 * num;
+                count += num;
+            } else if (grade.equals("D0")) {
+                totalScore += num;
+                count += num;
+            } else if (grade.equals("F")) {
+                totalScore += 0;
+                count += num;
             }
 
         }
 
-        System.out.printf("%.6f", totalGrade/totalCount);
-
-
+        System.out.println(totalScore/count);
     }
 }
