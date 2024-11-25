@@ -1,40 +1,45 @@
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Stack;
 import java.util.StringTokenizer;
 
 public class Main {
-
-    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static StringTokenizer st;
-    static StringBuilder sb = new StringBuilder();
     public static void main(String[] args) throws IOException {
-
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        boolean[][] arr = new boolean[100][100];
         int N = Integer.parseInt(br.readLine());
-        int[][] array = new int[100][100];
-        int totalArea = 0;
+        int answer = 0;
+
         for (int i = 0; i < N; i++) {
-            st = new StringTokenizer(br.readLine(), " ");
+            StringTokenizer st = new StringTokenizer(br.readLine());
 
             int x = Integer.parseInt(st.nextToken());
             int y = Integer.parseInt(st.nextToken());
 
-            for (int j = x - 1; j < x + 9; j++) {
-                for (int k = y - 1; k < y + 9; k++) {
-                    array[j][k] = 1;
+            for (int j = x; j < x + 10; j++) {
+                for (int k = y; k < y + 10; k++) {
+                    arr[j][k] = true;
                 }
             }
-
-
         }
 
-        for (int i = 0; i < 100; i++) {
-            for (int j = 0; j < 100; j++) {
-                totalArea += array[i][j];
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr.length; j++) {
+                if (arr[i][j]) {
+                    answer++;
+                }
             }
         }
 
-        System.out.println(totalArea);
+        System.out.println(answer);
     }
 }
+
