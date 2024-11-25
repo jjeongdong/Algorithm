@@ -1,36 +1,57 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Stack;
 import java.util.StringTokenizer;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
         int N = Integer.parseInt(br.readLine());
-        int[][] arr = new int[N][2];
+        ArrayList<Point> points = new ArrayList<>();
+
 
         for (int i = 0; i < N; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            arr[i][0] = Integer.parseInt(st.nextToken());
-            arr[i][1] = Integer.parseInt(st.nextToken());
+            int x = Integer.parseInt(st.nextToken());
+            int y = Integer.parseInt(st.nextToken());
+
+            points.add(new Point(x, y));
         }
 
-        Arrays.sort(arr, new Comparator<int[]>() {
-            @Override
-            public int compare(int[] o1, int[] o2) {
-                if (o1[0] == o2[0]) {
-                    return o1[1] - o2[1];
-                } else {
-                    return o1[0] - o2[0];
-                }
-            }
-        });
+        Collections.sort(points);
 
-
-        for (int i = 0; i < N; i++) { // 출력문
-            System.out.println(arr[i][0] + " " + arr[i][1]);
+        for (int i = 0; i < points.size(); i++) {
+            Point now = points.get(i);
+            sb.append(now.x).append(" ").append(now.y).append("\n");
         }
+
+        System.out.println(sb);
+    }
+}
+
+class Point implements Comparable<Point> {
+    int x;
+    int y;
+
+    public Point(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    @Override
+    public int compareTo(Point o) {
+        if (this.x == o.x) {
+            return this.y - o.y;
+        }
+
+        return this.x - o.x;
     }
 }
