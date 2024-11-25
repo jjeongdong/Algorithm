@@ -1,59 +1,33 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws NumberFormatException, IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+        StringBuilder sb = new StringBuilder();
 
-        int num1 = Integer.parseInt(br.readLine());
-        int[] arr1 = new int[num1];
-        StringTokenizer st1 = new StringTokenizer(br.readLine());
+        int n, m;
+        HashMap<String, Integer> owned = new HashMap<>();
 
-        for (int i = 0; i < arr1.length; i++) {
-            arr1[i] = Integer.parseInt(st1.nextToken());
+        n = Integer.parseInt(br.readLine());
+        st = new StringTokenizer(br.readLine());
+        for (int i=0; i<n; i++) {
+            owned.put(st.nextToken(), 0);
         }
 
-        int num2 = Integer.parseInt(br.readLine());
-        int[] arr2 = new int[num2];
-        StringTokenizer st2 = new StringTokenizer(br.readLine());
-
-        for (int i = 0; i < arr2.length; i++) {
-            arr2[i] = Integer.parseInt(st2.nextToken());
-        }
-
-        Arrays.sort(arr1);
-
-
-
-        for (int i = 0; i < arr2.length; i++) {
-
-            int lt = 0;
-            int rt = arr1.length - 1;
-
-            while (lt <= rt) {
-                int mid = (lt + rt) / 2;
-
-                if (arr1[mid] == arr2[i]) {
-                    System.out.print(1 + " ");
-                    break;
-                }
-
-                if (arr1[mid] < arr2[i]) {
-                    lt = mid + 1;
-                } else {
-                    rt = mid - 1;
-                }
-
-                if (lt > rt) {
-                    System.out.print(0 + " ");
-                }
+        m = Integer.parseInt(br.readLine());
+        st = new StringTokenizer(br.readLine());
+        for (int i=0; i<m; i++) {
+            if (owned.get(st.nextToken()) != null) {
+                sb.append("1 ");
+            } else {
+                sb.append("0 ");
             }
         }
-
+        System.out.println(sb.toString());
     }
 }
