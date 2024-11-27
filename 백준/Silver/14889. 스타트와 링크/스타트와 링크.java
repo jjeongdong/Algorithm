@@ -6,7 +6,7 @@ public class Main {
     static int n;
     static int[][] board;
     static boolean[] visited;
-    static int min;
+    static int min = Integer.MAX_VALUE;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -21,16 +21,16 @@ public class Main {
                 board[i][j] = Integer.parseInt(st.nextToken());
             }
         }
-        min = Integer.MAX_VALUE;
+
         DFS(0, 0);
         System.out.println(min);
+
     }
 
     public static void DFS(int cur, int check) {
-        if (check == n / 2 || cur == n) {
-            if (check == n / 2) {
-                calculate();
-            }
+        if (check == n / 2) {
+            calculate();
+            
             return;
         }
 
@@ -50,6 +50,7 @@ public class Main {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (i == j) continue;
+
                 if (visited[i] && visited[j]) {
                     team1 += board[i][j];
                 } else if (!visited[i] && !visited[j]) {
@@ -61,3 +62,4 @@ public class Main {
         min = Math.min(min, Math.abs(team1 - team2));
     }
 }
+
