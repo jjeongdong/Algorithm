@@ -1,33 +1,20 @@
 import java.io.*;
-import java.util.Arrays;
+import java.math.BigInteger;
+import java.util.*;
 
 public class Main {
-    static int N, S;
-    static int[] arr;
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(br.readLine());
-        int[] arr = new int[N];
-        int answer = Integer.MIN_VALUE;
-        int maxValue = Integer.MIN_VALUE;
-
-        for (int i = 0; i < N; i++) {
-            arr[i] = Integer.parseInt(br.readLine());
-            maxValue = Math.max(maxValue, arr[i]);
+        int n = Integer.parseInt(br.readLine());
+        Integer[] arr = new Integer[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = Integer.parseInt(br.readLine());  //수 입력받기
         }
-        
-        for (int i = 1; i <= maxValue; i++) {
-            int cnt = 0;
-            for (int j = 0; j < N; j++) {
-                if (arr[j] >= i) {
-                    cnt++;
-                }
-            }
-
-            answer = Math.max(answer, cnt * i);
+        Arrays.sort(arr, Collections.reverseOrder());  //내림차순으로 정렬하기
+        int total = 0;
+        for (int i = 0; i < n; i++) {
+            total = Math.max(total, arr[i] * (i+1));
         }
-
-        System.out.println(answer);
+        System.out.print(total);
     }
 }
