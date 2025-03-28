@@ -1,61 +1,47 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Stack;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        // BufferedREader 를 통해 입력 값 얻기
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
+        int t = Integer.parseInt(br.readLine());
 
-        int T = Integer.parseInt(br.readLine());
-        String[] input;
-        // Test케이스의 갯수를 입력받는 코드
-        // String 배열의 input 생성
+        while (t-- > 0) {
+            String input = br.readLine();
+            LinkedList<Character> list = new LinkedList<>();
+            ListIterator<Character> iter = list.listIterator();
 
-        for(int i=0;i<T;i++) {
-            Stack<String> left = new Stack<>();
-            Stack<String> right = new Stack<>();
-            input = br.readLine().split("");
-
-            for (String str : input) {
-                switch (str) {
-                    case "<":
-                        if(!left.isEmpty()){
-                            right.push(left.pop());
+            for (char c : input.toCharArray()) {
+                switch (c) {
+                    case '<':
+                        if (iter.hasPrevious()) {
+                            iter.previous();
                         }
                         break;
-
-
-                    case ">":
-                        if (!right.isEmpty()) {
-                            left.push(right.pop());
+                    case '>':
+                        if (iter.hasNext()) {
+                            iter.next();
                         }
                         break;
-
-                    case "-":
-                        if (!left.isEmpty()) {
-                            left.pop();
+                    case '-':
+                        if (iter.hasPrevious()) {
+                            iter.previous();
+                            iter.remove();
                         }
                         break;
-
                     default:
-                        left.push(str);
+                        iter.add(c);
+                        break;
                 }
             }
 
-
-            while (!left.isEmpty()) {
-                right.push(left.pop());
+            StringBuilder sb = new StringBuilder();
+            for (char c : list) {
+                sb.append(c);
             }
-            while (!right.isEmpty()) {
-                sb.append(right.pop());
-            }
-            sb.append("\n");
+            System.out.println(sb.toString());
         }
-        System.out.println(sb.toString());
 
+        br.close();
     }
 }
