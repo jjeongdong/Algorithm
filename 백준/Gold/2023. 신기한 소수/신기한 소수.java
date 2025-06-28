@@ -1,8 +1,8 @@
+
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
 
 public class Main {
     static int N;
@@ -23,23 +23,23 @@ public class Main {
         if (jarisu == N) {
             if (isPrime(number)) {
                 sb.append(number).append("\n");
+                return;
             }
         }
 
         for (int i = 1; i < 10; i += 2) {
-            if (isPrime(number * 10 + i)) {
-                DFS(number * 10 + i, jarisu + 1);
+            if (isPrime(10 * number + i)) {
+                DFS(10 * number + i, jarisu + 1);
             }
         }
     }
 
     private static boolean isPrime(int number) {
-        for (int i = 2; i <= number / 2; i++) {
+        for (int i = 2; i < number / 2; i++) {
             if (number % i == 0) {
                 return false;
             }
         }
-
         return true;
     }
 }
