@@ -1,72 +1,82 @@
+
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
+public class Main {
+    static int N;
+    static int M;
+    static int[][] board;
+    static int[][] dist;
+    static boolean[][] visited;
+    static int[] dx = {-1, 0, 1, 0};
+    static int[] dy = {0, 1, 0, -1};
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        board = new int[N][M];
+        dist = new int[N][M];
+        visited = new boolean[N][M];
+
+        for (int i = 0; i < N; i++) {
+            String str = br.readLine();
+            for (int j = 0; j < M; j++) {
+                board[i][j] = Integer.parseInt(String.valueOf(str.charAt(j)));
+            }
+        }
+
+        bfs();
+        System.out.println(dist[N - 1][M - 1]);
+    }
+
+    private static void bfs() {
+        visited[0][0] = true;
+        dist[0][0] = 1;
+        Queue<Point> queue = new LinkedList<>();
+        queue.offer(new Point(0, 0));
+
+        while (!queue.isEmpty()) {
+            Point now = queue.poll();
+            int nx = now.getX();
+            int ny = now.getY();
+
+            for (int i = 0; i < 4; i++) {
+                int x = nx + dx[i];
+                int y = ny + dy[i];
+                if (x < N && x >= 0 && y < M && y >= 0) {
+                    if (board[x][y] == 1 && !visited[x][y]) {
+                        visited[x][y] = true;
+                        dist[x][y] = dist[nx][ny] + 1;
+                        queue.offer(new Point(x, y));
+                    }
+                }
+            }
+        }
+    }
+}
+
 class Point {
-    int x;
-    int y;
+    private int x;
+    private int y;
 
     public Point(int x, int y) {
         this.x = x;
         this.y = y;
     }
-}
 
-public class Main {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public int getX() {
+        return x;
+    }
 
-        int[] dx = {-1, 0, 1, 0};
-        int[] dy = {0, 1, 0, -1};
-
-        Queue<Point> Q = new LinkedList<>();
-        StringTokenizer st1 = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st1.nextToken());
-        int m = Integer.parseInt(st1.nextToken());
-        int L = 0;
-        boolean flag = false;
-
-        int[][] board = new int[n + 1][m + 1];
-        board[1][1] = 0;
-
-        for (int i = 1; i <= n; i++) {
-            String str = br.readLine();
-            for (int j = 1; j <= m; j++) {
-                board[i][j] = Integer.parseInt(String.valueOf(str.charAt(j - 1)));
-            }
-        }
-
-        Q.offer(new Point(1, 1));
-
-        while (!Q.isEmpty()) {
-
-            if (flag) break;
-            int len = Q.size();
-            for (int i = 0; i < len; i++) {
-                Point tmp = Q.poll();
-
-                if (tmp.x == n && tmp.y == m) {
-                    flag = true;
-                }
-
-                for (int j = 0; j < 4; j++) {
-                    int nx = tmp.x + dx[j];
-                    int ny = tmp.y + dy[j];
-
-                    if (nx >= 1 && nx <= n && ny >= 1 && ny <= m && board[nx][ny] == 1) {
-                        Q.offer(new Point(nx, ny));
-                        board[nx][ny] = 0;
-                    }
-                }
-            }
-            L++;
-        }
-
-
-        System.out.println(L);
-
+    public int getY() {
+        return y;
     }
 }
