@@ -1,71 +1,72 @@
+import org.w3c.dom.Node;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
+
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken());   // 도시의 개수
-        int M = Integer.parseInt(st.nextToken());   // 버스 노선의 개수
-        long[] distance = new long[N + 1];
+        StringBuilder sb = new StringBuilder();
+
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
         ArrayList<Edge> graph = new ArrayList<>();
+
+        long[] dist = new long[N + 1];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[1] = 0;
 
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
-            int startNode = Integer.parseInt(st.nextToken());
-            int endNode = Integer.parseInt(st.nextToken());
+            int start = Integer.parseInt(st.nextToken());
+            int end = Integer.parseInt(st.nextToken());
             int weight = Integer.parseInt(st.nextToken());
-            graph.add(new Edge(startNode, endNode, weight));
+
+            graph.add(new Edge(start, end, weight));
         }
 
-        Arrays.fill(distance, Integer.MAX_VALUE);
-        distance[1] = 0;
-
-        // 벨만-포드 알고리즘: Relaxation 단계
         for (int i = 0; i < N - 1; i++) {
             for (Edge edge : graph) {
-                if (distance[edge.start] != Integer.MAX_VALUE) {
-                    distance[edge.end] = Math.min(distance[edge.end], distance[edge.start] + edge.weight);
+                if (dist[edge.start] != Integer.MAX_VALUE && dist[edge.end] > dist[edge.start] + edge.weight) {
+                    dist[edge.end] = dist[edge.start] + edge.weight;
                 }
             }
         }
 
-        // 음수 사이클 검출
-        boolean hasNegativeCycle = false;
+        boolean isCycle = false;
         for (Edge edge : graph) {
-            if (distance[edge.start] != Integer.MAX_VALUE &&
-                    distance[edge.end] > distance[edge.start] + edge.weight) {
-                hasNegativeCycle = true;
-                break;
+            if (dist[edge.start] != Integer.MAX_VALUE && dist[edge.end] > dist[edge.start] + edge.weight) {
+                isCycle = true;
             }
         }
 
-        if (hasNegativeCycle) {
-            System.out.println(-1);
-        } else {
+        if (isCycle) sb.append(-1).append("\n");
+        else  {
             for (int i = 2; i <= N; i++) {
-                if (distance[i] == Integer.MAX_VALUE) {
-                    System.out.println(-1);
-                } else {
-                    System.out.println(distance[i]);
-                }
+                if (dist[i] == Integer.MAX_VALUE) sb.append(-1).append("\n");
+                else sb.append(dist[i]).append("\n");
             }
         }
+
+        System.out.println(sb);
     }
-}
 
-class Edge {
-    int start;
-    int end;
-    int weight;
+    static class Edge {
+        int start;
+        int end;
+        int weight;
 
-    public Edge(int start, int end, int weight) {
-        this.start = start;
-        this.end = end;
-        this.weight = weight;
+        public Edge(int start, int end, int weight) {
+            this.start = start;
+            this.end = end;
+            this.weight = weight;
+        }
     }
 }
