@@ -1,66 +1,64 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-    static char[][] arr;
-    static char[] alpha;
-
+    static int N;
+    static int[][] tree;
+    static StringBuilder sb = new StringBuilder();
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(br.readLine());
-        arr = new char[N + 1][2];
+        StringTokenizer st;
+        N = Integer.parseInt(br.readLine());
+        tree = new int[N][2];
 
-        alpha = new char[27];
-        for (int i = 1; i <= 26; i++) {
-            alpha[i] = (char) ('A' + i - 1);
-        }
-
-        for (int i = 1; i <= N; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine());
             char root = st.nextToken().charAt(0);
-            char lt = st.nextToken().charAt(0);
-            char rt = st.nextToken().charAt(0);
-            int index = root - 'A' + 1; // root를 배열 인덱스로 변환
-            arr[index][0] = lt;
-            arr[index][1] = rt;
+            char left = st.nextToken().charAt(0);
+            char right = st.nextToken().charAt(0);
+
+            if (left == '.') {
+                tree[root - 'A'][0] = -1;
+            } else {
+                tree[root - 'A'][0] = left - 'A';
+            }
+
+            if (right == '.') {
+                tree[root - 'A'][1] = -1;
+            } else {
+                tree[root - 'A'][1] = right - 'A';
+            }
         }
 
-        preDFS(1);
-        System.out.println();
-        midDFS(1);
-        System.out.println();
-        postDFS(1);
+        preOrder(0);
+        sb.append("\n");
+        inOrder(0);
+        sb.append("\n");
+        postOrder(0);
+        System.out.println(sb);
     }
 
-    private static void preDFS(int num) {
-        if (1 <= num && num <= 26) {
-            System.out.print(alpha[num]);
-            preDFS(arr[num][0] - 64);
-            preDFS(arr[num][1] - 64);
-        } else {
-            return;
-        }
+    private static void preOrder(int num) {
+        if (num == -1) return;
+        sb.append(Character.toChars(num + 'A'));
+        preOrder(tree[num][0]);
+        preOrder(tree[num][1]);
     }
 
-    private static void midDFS(int num) {
-        if (1 <= num && num <= 26) {
-            midDFS(arr[num][0] - 64);
-            System.out.print(alpha[num]);
-            midDFS(arr[num][1] - 64);
-        } else {
-            return;
-        }
+    private static void inOrder(int num) {
+        if (num == -1) return;
+        inOrder(tree[num][0]);
+        sb.append(Character.toChars(num + 'A'));
+        inOrder(tree[num][1]);
     }
 
-    private static void postDFS(int num) {
-        if (1 <= num && num <= 26) {
-            postDFS(arr[num][0] - 64);
-            postDFS(arr[num][1] - 64);
-            System.out.print(alpha[num]);
-        } else {
-            return;
-        }
+    private static void postOrder(int num) {
+        if (num == -1) return;
+        postOrder(tree[num][0]);
+        postOrder(tree[num][1]);
+        sb.append(Character.toChars(num + 'A'));
     }
 }
