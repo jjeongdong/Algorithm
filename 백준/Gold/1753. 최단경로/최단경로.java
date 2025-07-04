@@ -3,25 +3,32 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
+
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
         StringTokenizer st = new StringTokenizer(br.readLine());
+        StringBuilder sb = new StringBuilder();
+
         int V = Integer.parseInt(st.nextToken());
         int E = Integer.parseInt(st.nextToken());
-        int K = Integer.parseInt(br.readLine());    // 시작 번호
-
-        int[] arr = new int[V + 1];
-        for (int i = 1; i < arr.length; i++) {
-            if (i == K) arr[i] = 0;
-            else arr[i] = Integer.MAX_VALUE;
-        }
+        int K = Integer.parseInt(br.readLine());
 
         boolean[] visited = new boolean[V + 1];
+        int[] dist = new int[V + 1];
+
+        for (int i = 0; i < V + 1; i++) {
+            if (i == K) {
+                dist[i] = 0;
+            } else {
+                dist[i] = Integer.MAX_VALUE;
+            }
+        }
+
         ArrayList<Node>[] A = new ArrayList[V + 1];
         for (int i = 1; i <= V; i++) {
             A[i] = new ArrayList<>();
@@ -36,28 +43,25 @@ public class Main {
             A[start].add(new Node(end, weight));
         }
 
-        PriorityQueue<Node> pq = new PriorityQueue<>();
-        pq.offer(new Node(K, 0));
+        PriorityQueue<Node> priorityQueue = new PriorityQueue<>();
+        priorityQueue.add(new Node(K, 0));
 
-        while (!pq.isEmpty()) {
-            Node now = pq.poll();
+        while (!priorityQueue.isEmpty()) {
+            Node now = priorityQueue.poll();
             if (visited[now.end]) continue;
             visited[now.end] = true;
 
             for (Node node : A[now.end]) {
-                if (arr[node.end] > arr[now.end] + node.weight) {
-                    arr[node.end] = arr[now.end] + node.weight;
-                    pq.offer(new Node(node.end, arr[node.end]));
+                if (dist[node.end] > dist[now.end] + node.weight) {
+                    dist[node.end] = dist[now.end] + node.weight;
+                    priorityQueue.add(new Node(node.end, dist[node.end]));
                 }
             }
         }
 
-        for (int i = 1; i <= V; i++) {
-            if (arr[i] == Integer.MAX_VALUE) {
-                sb.append("INF").append("\n");
-            } else {
-                sb.append(arr[i]).append("\n");
-            }
+        for (int i = 1; i < V + 1; i++) {
+            if (dist[i] == Integer.MAX_VALUE) sb.append("INF").append("\n");
+            else sb.append(dist[i]).append("\n");
         }
 
         System.out.println(sb);
