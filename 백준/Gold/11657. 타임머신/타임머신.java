@@ -39,7 +39,6 @@ public class Main {
         boolean cycle = false;
         for (Edge e : A) {
             if (dist[e.start] != Integer.MAX_VALUE && dist[e.end] > dist[e.start] + e.weight) {
-                dist[e.end] = dist[e.start] + e.weight;
                 cycle = true;
             }
         }
