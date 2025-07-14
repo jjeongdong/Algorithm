@@ -1,43 +1,39 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
-
 public class Main {
-
-    static int N, M;
+    static int N;
+    static int M;
     static int[] arr;
-    static int[] ch;
-
+    static boolean[] visited;
+    static StringBuilder sb = new StringBuilder();
     public static void main(String[] args) throws IOException {
-        Main T = new Main();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
 
-        arr = new int[10];
-        ch = new int[10];
-        T.DFS(0);
-
+        arr = new int[M];
+        visited = new boolean[N + 1];
+        DFS(0);
+        System.out.println(sb);
     }
 
-    void DFS(int L) {
+    public static void DFS(int L) {
         if (L == M) {
             for (int i = 0; i < M; i++) {
-                System.out.print(arr[i] + " ");
+                sb.append(arr[i]).append(" ");
             }
-            System.out.println();
+            sb.append("\n");
         } else {
             for (int i = 1; i <= N; i++) {
-                if (ch[i] == 0) {
+                if (!visited[i]) {
                     arr[L] = i;
-                    ch[i] = 1;
+                    visited[i] = true;
                     DFS(L + 1);
-                    ch[i] = 0;
+                    visited[i] = false;
                 }
             }
         }
