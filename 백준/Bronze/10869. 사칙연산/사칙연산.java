@@ -1,21 +1,23 @@
-import java.util.Scanner;
-
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+ 
 public class Main {
-
-    public static void main(String[] args) {
-
-        Scanner sc = new Scanner(System.in);
-
-        int a = sc.nextInt();
-        int b = sc.nextInt();
-
-        sc.close();
-
-        System.out.println(a + b);
-        System.out.println(a - b);
-        System.out.println(a * b);
-        System.out.println(a / b);
-        System.out.println(a % b);
-
-    }
+ 
+	public static void main(String[] args) throws IOException {
+		     
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		String[] str = br.readLine().split(" ");
+		int A = Integer.parseInt(str[0]);
+		int B = Integer.parseInt(str[1]);
+		
+		System.out.println(A+B);
+		System.out.println(A-B);
+		System.out.println(A*B);
+		System.out.println(A/B);
+		System.out.println(A%B);
+ 
+	}
+ 
 }
