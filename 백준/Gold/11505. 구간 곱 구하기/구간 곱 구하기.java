@@ -1,110 +1,87 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-	static int MOD = 1000000007;
-	static long[] arr, tree;
+    static final int MOD = 1000000007;
+    static int treeStartIndex;
+    static long[] tree;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());   // 변경이 일어나는 횟수
+        int C = Integer.parseInt(st.nextToken());   // 구간 곱을 구하는 횟수
+        int K = 1;
 
-	public static void main(String[] args) throws NumberFormatException, IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-		StringTokenizer st = new StringTokenizer(br.readLine());
+        // 1. 트리 초기화
+        // 2^k가 N보다 크거나 같은 k의 최솟값을 구함
+        while (Math.pow(2, K) < N) {
+            K++;
+        }
 
-		int N = Integer.parseInt(st.nextToken());
-		int M = Integer.parseInt(st.nextToken());
-		int K = Integer.parseInt(st.nextToken());
+        // 2 * 2^k를 트리의 크기로 잡음
+        int treeSize = (int) Math.pow(2, K + 1);
+        tree = new long[treeSize];
 
-		arr = new long[N + 1];
-		for (int i = 1; i <= N; i++) {
-			arr[i] = Long.parseLong(br.readLine());
-		}
+        // 시작 인덱스를 2^k로 잡음, 리프노드 초기화
+        treeStartIndex = (int) Math.pow(2, K);
+        for (int i = treeStartIndex; i < treeStartIndex + N; i++) {
+            tree[i] = Integer.parseInt(br.readLine());
+        }
 
-//		int k = (int) Math.ceil(Math.log(N) / Math.log(2)) + 1;
-//		int size = (int) Math.pow(2, k);
-//		
-//		tree = new long[size];
+        // 나머지 리프 노드는 1로 채우기
+        for (int i = treeStartIndex + N; i < treeSize; i++) {
+            tree[i] = 1;
+        }
 
-		tree = new long[N * 4];
+        // 부모 노드 초기화
+        for (int i = treeStartIndex - 1; i > 0; i--) {
+            tree[i] = ((tree[i * 2] * tree[i * 2 + 1]) % MOD);
+        }
 
-		init(1, N, 1);
+        // 질의값 구하기
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < M + C; i++) {
+            st = new StringTokenizer(br.readLine());
+            int op = Integer.parseInt(st.nextToken());
+            int x = Integer.parseInt(st.nextToken());
+            int y = Integer.parseInt(st.nextToken());
 
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < M + K; i++) {
-			st = new StringTokenizer(br.readLine());
+            if (op == 1) changeData(x, y);
+            else sb.append(calculateMul(x, y)).append("\n");
+        }
 
-			int a = Integer.parseInt(st.nextToken());
-			int b = Integer.parseInt(st.nextToken());
-			long c = Long.parseLong(st.nextToken());
+        System.out.println(sb);
+    }
 
-			if (a == 1) {
-				arr[b] = c;
-				update(1, N, 1, b, c);
-			} else if (a == 2) {
-				sb.append(mul(1, N, 1, b, (int) c) + "\n");
-			}
-		}
+    public static long calculateMul(int start_index, int end_index) {
+        long answer = 1;
+        start_index = treeStartIndex + start_index - 1;
+        end_index = treeStartIndex + end_index - 1;
 
-		bw.write(sb.toString());
-		bw.flush();
-		bw.close();
-		br.close();
-	}
+        while (start_index <= end_index) {
+            if (start_index % 2 == 1) answer = (answer * tree[start_index]) % MOD;
 
-	// start: 시작 인덱스, end: 끝 인덱스
-	public static long init(int start, int end, int node) {
-		if (start == end) {
-			return tree[node] = arr[start];
-		}
+            if (end_index % 2 == 0) answer = (answer * tree[end_index]) % MOD;
 
-		int mid = (start + end) / 2;
+            start_index = (start_index + 1) / 2;
+            end_index = (end_index - 1) / 2;
+        }
 
-		// 재귀적으로 두 부분으로 나눈 뒤에 그 합을 자기 자신으로 함.
-		return tree[node] = (init(start, mid, node * 2) * init(mid + 1, end, node * 2 + 1)) % MOD;
-	}
+        return answer;
+    }
 
-	// start: 시작 인덱스, end: 끝 인덱스
-	// left, right: 구간 합을 구하고자 하는 범위
-	public static long mul(int start, int end, int node, int left, int right) {
-		// 범위 밖에 있는 경우
-		if (left > end || right < start) {
-			return 1;
-		}
+    public static void changeData(int index, int data) {
+        index = treeStartIndex + index - 1;
+        tree[index] = data;  // 리프 노드 값을 갱신
 
-		// 범위 안에 있는 경우
-		if (left <= start && end <= right) {
-			return tree[node];
-		}
-
-		// 그렇지 않다면, 두 부분으로 나누어 합을 구하기
-		int mid = (start + end) / 2;
-		return (mul(start, mid, node * 2, left, right) * mul(mid + 1, end, node * 2 + 1, left, right)) % MOD;
-	}
-
-	// start: 시작 인덱스, end: 끝 인덱스
-	// idx: 구간 합을 수정하고자 하는 노드
-	// dif: 수정할 값
-	public static long update(int start, int end, int node, int idx, long val) {
-		// arr[idx]를 x라 하자.
-		// tree에서 값이 x인 인덱스를 target이라고 할 때,
-		// target과 연결된 가지 부분을 전체 갱신해야 함.
-
-		// 범위 밖에 있는 경우
-		if (idx < start || idx > end) {
-			return tree[node];
-		}
-
-		// 리프 노드 업데이트
-		if (start == end) {
-			return tree[node] = val;
-		}
-
-		int mid = (start + end) / 2;
-		return tree[node] = (update(start, mid, node * 2, idx, val) * update(mid + 1, end, node * 2 + 1, idx, val))
-				% MOD;
-	}
-
+        // 위로 올라가며 부모 노드 갱신
+        while (index > 1) {
+            index /= 2;
+            tree[index] = ((tree[index * 2] * tree[index * 2 + 1]) % MOD);
+        }
+    }
 }
