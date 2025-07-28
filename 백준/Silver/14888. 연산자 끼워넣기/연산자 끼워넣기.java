@@ -3,63 +3,62 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-
 public class Main {
-    public static int MAX = Integer.MIN_VALUE;    // 최댓값
-    public static int MIN = Integer.MAX_VALUE;    // 최솟값
-    public static int[] operator = new int[4];    // 연산자 개수
-    public static int[] number;                    // 숫자
-    public static int N;                        // 숫자 개수
-
+    static int N;
+    static int[] arr;
+    static int[] op;
+    static int MIN = Integer.MAX_VALUE;
+    static int MAX = Integer.MIN_VALUE;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         N = Integer.parseInt(br.readLine());
-        number = new int[N];
+        arr = new int[N];
+        op = new int[4];
 
         StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
-            number[i] = Integer.parseInt(st.nextToken());
+            arr[i] = Integer.parseInt(st.nextToken());
         }
 
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < 4; i++) {
-            operator[i] = Integer.parseInt(st.nextToken());
+            op[i] = Integer.parseInt(st.nextToken());
         }
 
-        DFS(number[0], 1);
-
+        dfs(arr[0], 1);
         System.out.println(MAX);
         System.out.println(MIN);
     }
 
-    private static void DFS(int num, int index) {
-        if (index == N) {
-            MAX = Math.max(MAX, num);
-            MIN = Math.min(MIN, num);
+    public static void dfs(int num, int idx) {
+        if (N == idx) {
+            if (num > MAX) MAX = num;
+            if (num < MIN) MIN = num;
         }
 
-        for (int i = 0; i < 4; i++) {
-            if (operator[i] > 0) {
-
-                operator[i]--;
-                switch (i) {
-                    case 0:
-                        DFS(num + number[index], index + 1);
-                        break;
-                    case 1:
-                        DFS(num - number[index], index + 1);
-                        break;
-                    case 2:
-                        DFS(num * number[index], index + 1);
-                        break;
-                    case 3:
-                        DFS(num / number[index], index + 1);
-                        break;
-                }
-
-                operator[i]++;
-            }
+        if (op[0] >= 1) {
+            op[0]--;
+            dfs(num + arr[idx], idx + 1);
+            op[0]++;
         }
+
+        if (op[1] >= 1) {
+            op[1]--;
+            dfs(num - arr[idx], idx + 1);
+            op[1]++;
+        }
+
+        if (op[2] >= 1) {
+            op[2]--;
+            dfs(num * arr[idx], idx + 1);
+            op[2]++;
+        }
+
+        if (op[3] >= 1) {
+            op[3]--;
+            dfs(num / arr[idx], idx + 1);
+            op[3]++;
+        }
+
     }
 }
