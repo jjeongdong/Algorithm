@@ -1,87 +1,85 @@
-
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-    static StringBuilder sb = new StringBuilder();
-    static int N;
-    static int M;
-    static int V;
+    static Queue<Integer> queue = new LinkedList<>();
+    static ArrayList<ArrayList<Integer>> arr = new ArrayList<>();
     static boolean[] visited;
-    static ArrayList<Integer>[] A;
+    static int N, M, V;
+    static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        N = Integer.parseInt(st.nextToken());   // 노드의 개수
-        M = Integer.parseInt(st.nextToken());   // 간선의 개수
-        V = Integer.parseInt(st.nextToken());   // 시작 번호
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        V = Integer.parseInt(st.nextToken());
+
+        arr = new ArrayList<>();
+        for (int i = 0; i <= N; i++) {
+            arr.add(new ArrayList<>());
+        }
 
         visited = new boolean[N + 1];
-        A = new ArrayList[N + 1];
-
-        for (int i = 1; i <= N; i++) {
-            A[i] = new ArrayList<>();
-        }
-
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
-            int s = Integer.parseInt(st.nextToken());
-            int e = Integer.parseInt(st.nextToken());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
 
-            A[s].add(e);
-            A[e].add(s);
+            arr.get(a).add(b);
+            arr.get(b).add(a);
         }
 
         for (int i = 1; i <= N; i++) {
-            Collections.sort(A[i]);
+            Collections.sort(arr.get(i));
         }
 
-        sb.append(V).append(" ");
-        visited[V] = true;
         dfs(V);
-
         sb.append("\n");
-        bfs();
-
-        System.out.println(sb);
+        bfs(V);
     }
 
-    private static void dfs(int num) {
-        for (int i : A[num]) {
-            if (!visited[i]) {
-                visited[i] = true;
-                sb.append(i).append(" ");
-                dfs(i);
+    public static void dfs(int start) {
+        sb.append(start).append(" ");
+        visited[start] = true;
+
+        for (int i = 0; i < arr.get(start).size(); i++) {
+            int y = arr.get(start).get(i);
+            if (!visited[y]) {
+                dfs(y);
             }
         }
     }
 
-    private static void bfs() {
-        Queue<Integer> queue = new LinkedList<>();
+    public static void bfs(int start) {
         visited = new boolean[N + 1];
-        queue.offer(V);
-        sb.append(V).append(" ");
-        visited[V] = true;
+        queue.add(start);
+        visited[start] = true;
 
         while (!queue.isEmpty()) {
-            int now = queue.poll();
-            for (int i : A[now]) {
-                if (!visited[i]) {
-                    visited[i] = true;
-                    sb.append(i).append(" ");
-                    queue.offer(i);
+            int len = queue.size();
+
+            for (int i = 0; i < len; i++) {
+                int next = queue.poll();
+                sb.append(next).append(" ");
+
+                for (int j = 0; j < arr.get(next).size(); j++) {
+                    int y = arr.get(next).get(j);
+                    if (!visited[y]) {
+                        queue.add(y);
+                        visited[y] = true;
+                    }
                 }
             }
         }
+
+        System.out.println(sb);
     }
 }
