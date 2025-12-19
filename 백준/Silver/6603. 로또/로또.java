@@ -1,53 +1,54 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.lang.*;
+import java.io.*;
 
-
-public class Main {
-
+// The main method must be in a class named "Main".
+class Main {
     static int N;
     static int[] arr;
-    static int[] numArr;
-    static int[] ch;
-    static StringBuilder sb;
-
+    static boolean[] visited;
+    static int[] result;
+    static StringBuilder sb = new StringBuilder();
+    
     public static void main(String[] args) throws IOException {
-        Main T = new Main();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        do {
-
-            sb = new StringBuilder();
-            StringTokenizer st = new StringTokenizer(br.readLine());
+        StringTokenizer st;
+        
+        while (true) {
+            st = new StringTokenizer(br.readLine());
             N = Integer.parseInt(st.nextToken());
+            if(N == 0) break;
 
-            numArr = new int[N];
-            arr = new int[6];
-            ch = new int[50];
-
+            arr = new int[N];
+            result = new int[6];
+            visited = new boolean[N];
+            
             for (int i = 0; i < N; i++) {
-                numArr[i] = Integer.parseInt(st.nextToken());
+                arr[i] = Integer.parseInt(st.nextToken());
             }
 
-            T.DFS(0, 0);
-            System.out.println(sb);
+            dfs(0,0);
+            sb.append("\n");
+        }
 
-        } while (N != 0);
+       System.out.print(sb);
     }
 
-    void DFS(int L, int S) {
-        if (L == 6) {
-            for (int i = 0; i < arr.length; i++) {
-                sb.append(arr[i]).append(" ");
+    public static void dfs(int start, int depth) {
+        if (depth == 6) {
+            for (int num : result) {
+                sb.append(num).append(" ");
             }
             sb.append("\n");
-        } else {
-            for (int i = S; i < N; i++) {
-                arr[L] = numArr[i];
-                DFS(L + 1, i + 1);
+            return;
+        }
+
+        for (int i  = start; i < N; i++) {
+            if(!visited[i]) {
+                result[depth] = arr[i];
+                visited[i] = true;
+                dfs(i + 1, depth  + 1);
+                visited[i] = false;
             }
         }
     }
