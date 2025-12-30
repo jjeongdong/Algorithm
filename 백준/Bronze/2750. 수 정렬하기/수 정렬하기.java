@@ -1,28 +1,20 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        int N = scanner.nextInt();
+        Scanner sc = new Scanner(System.in);
+        int num = sc.nextInt();
 
-        int[] arr = new int[N];
-
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = scanner.nextInt();
+        int[] array = new int[num];
+        for (int i = 0; i < num; i++) {
+            array[i] = sc.nextInt();
         }
-
-        for (int i = 0; i < arr.length - 1; i++) {
-            for (int j = 0; j < arr.length - i - 1; j++) {
-                if (arr[j] > arr[j + 1]) {
-                    int tmp = arr[j];
-                    arr[j] = arr[j + 1];
-                    arr[j + 1] = tmp;
-                }
-            }
-        }
-
-        for (int x : arr) {
-            System.out.println(x);
+        
+        Arrays.sort(array);
+        
+        for (int i = 0; i < num; i++) {
+            System.out.println(array[i]);
         }
     }
 }
