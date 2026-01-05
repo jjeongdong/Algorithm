@@ -1,42 +1,44 @@
-import java.util.Scanner;
-import java.util.Stack;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+    public static Deque<Character> stack;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int N = Integer.parseInt(br.readLine());
+        StringBuilder sb = new StringBuilder();
 
-        int size = scanner.nextInt();
-        Stack<Character> stack = new Stack<>();
+        while (N-- > 0) {
+            String str = br.readLine();
+            sb.append(solve(str)).append("\n");
+        }
 
+        System.out.println(sb);
+    }
 
-        for (int k = 0; k < size; k++) {
+    public static String solve(String s) {
+        stack = new ArrayDeque<>();
 
-            String str = scanner.next();
-            String answer = "YES";
-            int count = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
 
-            for (int i = 0; i < str.length(); i++) {
-                stack.push(str.charAt(i));
+            if (c == '(') {
+                stack.push(c);
+            } else if (stack.isEmpty()) {
+                return "NO";
+            } else {
+                stack.pop();
             }
-            for (int i = 0; i < str.length(); i++) {
-                Character pop = stack.pop();
+        }
 
-                if (pop == ')') {
-                    count++;
-                } else {
-                    count--;
-                }
-
-                if (count < 0) {
-                    answer = "NO";
-                }
-            }
-
-            if (count != 0) {
-                answer = "NO";
-            }
-
-            System.out.println(answer);
+        if (stack.isEmpty()) {
+            return "YES";
+        }
+        else {
+            return "NO";
         }
     }
 }
