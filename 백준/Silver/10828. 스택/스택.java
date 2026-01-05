@@ -1,53 +1,49 @@
-import java.util.Scanner;
+import java.util.*;
+import java.lang.*;
+import java.io.*;
 
-public class Main {
+// The main method must be in a class named "Main".
+class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        Deque<Integer> stack = new ArrayDeque<>();
+        StringBuilder sb = new StringBuilder();
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        int N = Integer.parseInt(br.readLine());
+        StringTokenizer st;
 
-        int N = scanner.nextInt();
-        scanner.nextLine(); // consume the newline character
+        while (N-- > 0) {
+            st = new StringTokenizer(br.readLine());
+            String command = st.nextToken();
 
-        int[] arr = new int[10000];
-        int lt = -1;
-        int tmp = 0;
-
-        StringBuilder output = new StringBuilder();
-
-        for (int i = 0; i < N; i++) {
-            String[] str = scanner.nextLine().split(" ");
-            String command = str[0];
-
-            if (str.length == 2) {
-                tmp = Integer.parseInt(str[1]);
-            }
-
-            if ("push".equals(command)) {
-                arr[++lt] = tmp;
-            } else if ("top".equals(command)) {
-                if (lt == -1) {
-                    output.append("-1\n");
-                } else {
-                    output.append(arr[lt]).append("\n");
+            if (command.equals("push")) {
+                int num = Integer.parseInt(st.nextToken());
+                stack.push(num);
+            } else if (command.equals("pop")) {
+                if (!stack.isEmpty()) {
+                    int val = stack.pop();
+                    sb.append(val).append("\n");
+                } else{
+                    sb.append(-1).append("\n");
                 }
-            } else if ("size".equals(command)) {
-                output.append(lt + 1).append("\n");
-            } else if ("pop".equals(command)) {
-                if (lt == -1) {
-                    output.append("-1\n");
-                } else {
-                    output.append(arr[lt]).append("\n");
-                    lt--;
+            } else if (command.equals("size")) {
+                int val = stack.size();
+                sb.append(val).append("\n");;
+            } else if (command.equals("empty")) {
+                if (stack.isEmpty()) {
+                    sb.append(1).append("\n");
+                } else{
+                    sb.append(0).append("\n");
                 }
-            } else if ("empty".equals(command)) {
-                if (lt == -1) {
-                    output.append("1\n");
+            } else if (command.equals("top")) {
+                if (stack.isEmpty()) {
+                    sb.append(-1).append("\n");
                 } else {
-                    output.append("0\n");
+                    sb.append(stack.peek()).append("\n");
                 }
             }
         }
 
-        System.out.print(output.toString());
+        System.out.println(sb);
     }
 }
